@@ -1,0 +1,15 @@
+var USER_CONNECTION_STATUS
+;(function (USER_CONNECTION_STATUS) {
+    USER_CONNECTION_STATUS["OFFLINE"] = "offline"
+    USER_CONNECTION_STATUS["ONLINE"] = "online"
+})(USER_CONNECTION_STATUS || (USER_CONNECTION_STATUS = {}))
+var USER_STATUS
+;(function (USER_STATUS) {
+    USER_STATUS["INITIAL"] = "initial"
+    USER_STATUS["CONNECTING"] = "connecting"
+    USER_STATUS["ATTEMPTING_JOIN"] = "attempting-join"
+    USER_STATUS["JOINED"] = "joined"
+    USER_STATUS["CONNECTION_FAILED"] = "connection-failed"
+    USER_STATUS["DISCONNECTED"] = "disconnected"
+})(USER_STATUS || (USER_STATUS = {}))
+export { USER_CONNECTION_STATUS, USER_STATUS }

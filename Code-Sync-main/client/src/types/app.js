@@ -1,0 +1,6 @@
+var ACTIVITY_STATE
+;(function (ACTIVITY_STATE) {
+    ACTIVITY_STATE["CODING"] = "coding"
+    ACTIVITY_STATE["DRAWING"] = "drawing"
+})(ACTIVITY_STATE || (ACTIVITY_STATE = {}))
+export { ACTIVITY_STATE }
