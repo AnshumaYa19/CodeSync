@@ -9,7 +9,7 @@ function SplitterComponent({ children }) {
     const getGutter = () => {
         const gutter = document.createElement("div")
         gutter.className = "h-full cursor-e-resizer hidden md:block"
-        gutter.style.backgroundColor = "#e1e1ffb3"
+        gutter.style.backgroundColor = "#272d29"
         return gutter
     }
     const getSizes = () => {

@@ -65,12 +65,12 @@ function CopilotView() {
         >
             <h1 className="view-title">Copilot</h1>
             <textarea
-                className="min-h-[120px] w-full rounded-md border-none bg-darkHover p-2 text-white outline-none"
+                className="min-h-[120px] w-full rounded-md border border-[#303832] bg-darkHover p-2 text-white placeholder:text-gray-500 outline-none focus-visible:border-primary"
                 placeholder="What code do you want to generate?"
                 onChange={(e) => setInput(e.target.value)}
             />
             <button
-                className="mt-1 flex w-full justify-center rounded-md bg-primary p-2 font-bold text-black outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-1 flex w-full justify-center rounded-md bg-primary p-2 font-bold text-black shadow-[0_0_16px_rgba(183,255,60,0.12)] hover:bg-[#c7ff67] hover:shadow-[0_0_22px_rgba(183,255,60,0.24)] disabled:cursor-not-allowed disabled:opacity-50"
                 onClick={generateCode}
                 disabled={isRunning}
             >
@@ -104,7 +104,7 @@ function CopilotView() {
                     </button>
                 </div>
             )}
-            <div className="h-full w-full overflow-y-auto rounded-lg p-0">
+            <div className="markdown-output h-full w-full overflow-y-auto rounded-lg border border-[#202522] bg-[#111413] p-3">
                 <ReactMarkdown
                     components={{
                         code({ inline, className, children, ...props }) {
@@ -115,7 +115,7 @@ function CopilotView() {
                                     style={dracula}
                                     language={language}
                                     PreTag="pre"
-                                    className="!m-0 !h-full !rounded-lg !bg-gray-900 !p-2"
+                                    className="!m-0 !h-full !rounded-lg !bg-[#111413] !p-2"
                                 >
                                     {String(children).replace(/\n$/, "")}
                                 </SyntaxHighlighter>

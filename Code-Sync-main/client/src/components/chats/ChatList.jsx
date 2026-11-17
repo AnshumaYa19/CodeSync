@@ -30,7 +30,7 @@ function ChatList() {
     }, [isNewMessage, setIsNewMessage, lastScrollHeight])
     return (
         <div
-            className="flex-grow overflow-auto rounded-md bg-darkHover p-2"
+            className="flex-grow overflow-auto rounded-md border border-[#242a26] bg-[#111413] p-2"
             ref={messagesContainerRef}
             onScroll={handleScroll}
         >
@@ -40,7 +40,7 @@ function ChatList() {
                     <div
                         key={index}
                         className={
-                            "mb-2 w-[80%] self-end break-words rounded-md bg-dark px-3 py-2" +
+                            "mb-2 w-[80%] self-end break-words rounded-lg border border-[#292f2b] bg-[#191d1b] px-3 py-2" +
                             (message.username === currentUser.username
                                 ? " ml-auto "
                                 : "")
@@ -50,7 +50,7 @@ function ChatList() {
                             <span className="text-xs text-primary">
                                 {message.username}
                             </span>
-                            <span className="text-xs text-white">
+                            <span className="text-xs text-gray-500">
                                 {message.timestamp}
                             </span>
                         </div>

@@ -24,7 +24,7 @@ const CopilotContextProvider = ({ children }) => {
         const toastId = toast.loading("Generating code...")
         setIsRunning(true)
         try {
-            const response = await axiosInstance.post("/openai", {
+            const response = await axiosInstance.post("/generate", {
                 messages: [
                     {
                         role: "system",
@@ -36,7 +36,6 @@ const CopilotContextProvider = ({ children }) => {
                         content: input,
                     },
                 ],
-                model: "openai",
             })
             const code = response.data.choices?.[0]?.message?.content
             if (typeof code !== "string" || code.length === 0) {

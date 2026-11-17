@@ -14,10 +14,41 @@ body {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    background: #0d0f10;
+    color: #f4f6f2;
+    color-scheme: dark;
 
-    --sb-track-color: #3d404a;
-    --sb-thumb-color: #e1e1ffb3;
+    --sb-track-color: #111415;
+    --sb-thumb-color: #424a43;
     --sb-size: 6px;
+}
+
+::selection {
+    background: rgb(183 255 60 / 28%);
+    color: #fff;
+}
+
+button,
+input,
+textarea,
+select {
+    accent-color: #b7ff3c;
+}
+
+button {
+    transition:
+        background-color 160ms ease,
+        border-color 160ms ease,
+        box-shadow 160ms ease,
+        color 160ms ease;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+button:focus-visible {
+    outline: 2px solid #b7ff3c;
+    outline-offset: 2px;
 }
 
 ::-webkit-scrollbar {
@@ -64,11 +95,75 @@ body {
     /* min-height: 100vh; */
 }
 
+.cm-editor {
+    border-top: 1px solid #202522;
+}
+
+.cm-editor .cm-gutters {
+    border-right: 1px solid #242a26;
+}
+
+.cm-editor .cm-activeLineGutter {
+    color: #b7ff3c;
+}
+
+.cm-editor .cm-cursor {
+    border-left-color: #b7ff3c;
+}
+
+.cm-editor .cm-selectionBackground,
+.cm-editor.cm-focused .cm-selectionBackground {
+    background: rgb(183 255 60 / 20%) !important;
+}
+
+.view-title {
+    border-color: #282d2a;
+    color: #f4f6f2;
+    font-weight: 700;
+    letter-spacing: -0.025em;
+}
+
+.markdown-output {
+    color: #d7ddd8;
+    line-height: 1.65;
+}
+
+.markdown-output :is(h1, h2, h3) {
+    margin: 0.8em 0 0.4em;
+    color: #f4f6f2;
+    font-weight: 700;
+}
+
+.markdown-output :not(pre) > code {
+    border: 1px solid #303832;
+    border-radius: 0.3rem;
+    background: #181b1d;
+    padding: 0.1rem 0.35rem;
+    color: #b7ff3c;
+}
+
+.markdown-output a {
+    color: #b7ff3c;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 select {
     appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
 }
 
 @media screen and (max-width: 768px) {

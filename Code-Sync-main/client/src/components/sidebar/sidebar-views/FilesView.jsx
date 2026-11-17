@@ -157,7 +157,7 @@ function FilesView() {
                     hidden: minHeightReached,
                 })}
             >
-                <hr />
+                <hr className="border-[#282d2a]" />
                 <button
                     className="mt-2 flex w-full justify-start rounded-md p-2 transition-all hover:bg-darkHover"
                     onClick={handleOpenDirectory}

@@ -8,7 +8,7 @@ function DrawingEditor() {
     const { isMobile } = useWindowDimensions()
     return (
         <Tldraw
-            colorScheme="system"
+            colorScheme="dark"
             forceMobile={isMobile}
             defaultName="Editor"
             className="z-0"

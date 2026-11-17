@@ -28,22 +28,34 @@ const io = new socket_io_1.Server(server, {
   maxHttpBufferSize: 1e8,
   pingTimeout: 60000,
 });
-const pistonApiUrl = (process.env.PISTON_API_URL ||
-  "https://emkc.org/api/v2/piston").replace(/\/+$/, "");
+
+
+const pistonApiUrl = (
+  process.env.PISTON_API_URL ||
+  "https://api.onlinecompiler.io/api/v2/piston"
+).replace(/\/+$/, "");
+
 const pistonApiKey = process.env.PISTON_API_KEY;
 const pistonRequests = new Map();
-let userSocketMap = [];
 
 function limitPistonExecutions(req, res, next) {
   const now = Date.now();
+
   for (const [ip, request] of pistonRequests) {
-    if (now - request.startedAt >= 60_000) pistonRequests.delete(ip);
+    if (now - request.startedAt >= 60_000) {
+      pistonRequests.delete(ip);
+    }
   }
 
   const ip = req.ip || req.socket.remoteAddress || "unknown";
   const request = pistonRequests.get(ip);
+
   if (request && request.count >= 30) {
-    res.set("Retry-After", String(Math.ceil((request.startedAt + 60_000 - now) / 1000)));
+    res.set(
+      "Retry-After",
+      String(Math.ceil((request.startedAt + 60_000 - now) / 1000))
+    );
+
     return res.status(429).json({
       message: "Execution limit reached. Try again in a minute.",
     });
@@ -51,13 +63,14 @@ function limitPistonExecutions(req, res, next) {
 
   if (request) request.count += 1;
   else pistonRequests.set(ip, { startedAt: now, count: 1 });
+
   next();
 }
 
 async function forwardPistonRequest(req, res, endpoint) {
   if (endpoint === "execute" && !pistonApiKey) {
     return res.status(503).json({
-      message: "Piston execution is not configured. Set PISTON_API_KEY in the server environment.",
+      message: "Set PISTON_API_KEY in the server environment.",
     });
   }
 
@@ -65,30 +78,101 @@ async function forwardPistonRequest(req, res, endpoint) {
     const response = await fetch(`${pistonApiUrl}/${endpoint}`, {
       method: endpoint === "execute" ? "POST" : "GET",
       headers: {
-        ...(pistonApiKey ? { Authorization: pistonApiKey } : {}),
-        ...(endpoint === "execute" ? { "Content-Type": "application/json" } : {}),
+        ...(pistonApiKey
+          ? { Authorization: pistonApiKey }
+          : {}),
+        ...(endpoint === "execute"
+          ? { "Content-Type": "application/json" }
+          : {}),
       },
-      ...(endpoint === "execute" ? { body: JSON.stringify(req.body) } : {}),
+      ...(endpoint === "execute"
+        ? { body: JSON.stringify(req.body) }
+        : {}),
     });
+
     const content = await response.text();
+
     res.status(response.status);
+
     if (response.headers.has("content-type")) {
       res.set("Content-Type", response.headers.get("content-type"));
     }
+
     return res.send(content);
   } catch (error) {
-    console.error(`Failed to reach Piston ${endpoint} endpoint:`, error);
-    return res.status(502).json({ message: "Could not connect to Piston." });
+    console.error("Failed to reach OnlineCompiler:", error);
+
+    return res.status(502).json({
+      message: "Could not connect to OnlineCompiler.",
+    });
   }
 }
 
 app.get("/api/piston/runtimes", (req, res) =>
-  forwardPistonRequest(req, res, "runtimes"),
+  forwardPistonRequest(req, res, "runtimes")
 );
-app.post("/api/piston/execute", limitPistonExecutions, (req, res) =>
-  forwardPistonRequest(req, res, "execute"),
+
+app.post(
+  "/api/piston/execute",
+  limitPistonExecutions,
+  (req, res) => forwardPistonRequest(req, res, "execute")
 );
+const pollinationsApiUrl = (
+  process.env.POLLINATIONS_API_URL || "https://gen.pollinations.ai/v1"
+).replace(/\/+$/, "");
+
+const pollinationsApiKey = process.env.POLLINATIONS_API_KEY;
+const pollinationsModel =
+  process.env.POLLINATIONS_MODEL || "openai/gpt-5.4-nano";
+
+app.post("/api/copilot/generate", async (req, res) => {
+  if (!pollinationsApiKey) {
+    return res.status(503).json({
+      message: "Pollinations API key is not configured.",
+    });
+  }
+
+  const { messages } = req.body;
+
+  if (!Array.isArray(messages) || messages.length === 0) {
+    return res.status(400).json({
+      message: "Valid messages are required.",
+    });
+  }
+
+  try {
+    const response = await fetch(
+      `${pollinationsApiUrl}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${pollinationsApiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: pollinationsModel,
+          messages,
+        }),
+      }
+    );
+
+    const data = await response.text();
+
+    return res
+      .status(response.status)
+      .type("application/json")
+      .send(data);
+  } catch (error) {
+    console.error("Pollinations request failed:", error);
+
+    return res.status(502).json({
+      message: "Could not connect to Pollinations.",
+    });
+  }
+});
+
 // Function to get all users in a room
+let userSocketMap = [];
 function getUsersInRoom(roomId) {
   return userSocketMap.filter((user) => user.roomId == roomId);
 }

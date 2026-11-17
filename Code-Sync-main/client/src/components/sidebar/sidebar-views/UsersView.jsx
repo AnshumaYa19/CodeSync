@@ -48,7 +48,7 @@ function UsersView() {
                 <div className="flex w-full gap-4">
                     {/* Share URL button */}
                     <button
-                        className="flex flex-grow items-center justify-center rounded-md bg-white p-3 text-black"
+                        className="flex flex-grow items-center justify-center rounded-md border border-darkHover bg-darkHover p-3 text-white hover:border-primary/40 hover:bg-[#202523]"
                         onClick={shareURL}
                         title="Share Link"
                     >
@@ -56,7 +56,7 @@ function UsersView() {
                     </button>
                     {/* Copy URL button */}
                     <button
-                        className="flex flex-grow items-center justify-center rounded-md bg-white p-3 text-black"
+                        className="flex flex-grow items-center justify-center rounded-md border border-darkHover bg-darkHover p-3 text-white hover:border-primary/40 hover:bg-[#202523]"
                         onClick={copyURL}
                         title="Copy Link"
                     >
@@ -64,7 +64,7 @@ function UsersView() {
                     </button>
                     {/* Leave room button */}
                     <button
-                        className="flex flex-grow items-center justify-center rounded-md bg-primary p-3 text-black"
+                        className="flex flex-grow items-center justify-center rounded-md bg-danger p-3 text-white hover:bg-[#e64050]"
                         onClick={leaveRoom}
                         title="Leave room"
                     >

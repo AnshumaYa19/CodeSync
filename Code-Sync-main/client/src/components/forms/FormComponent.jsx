@@ -85,14 +85,15 @@ const FormComponent = () => {
         status,
     ])
     return (
-        <div className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4 p-4 sm:w-[500px] sm:p-8">
-            <img src={logo} alt="Logo" className="w-full" />
+        <div className="flex w-full flex-col items-center justify-center gap-5 p-6 sm:p-9">
+            <img src={logo} alt="Code Sync" className="w-full max-w-[280px]" />
             <form onSubmit={joinRoom} className="flex w-full flex-col gap-4">
                 <input
                     type="text"
                     name="roomId"
                     placeholder="Room Id"
-                    className="w-full rounded-md border border-gray-500 bg-darkHover px-3 py-3 focus:outline-none"
+                    aria-label="Room ID"
+                    className="w-full rounded-lg border border-[#303832] bg-[#171B19] px-4 py-3 text-white placeholder:text-gray-500 focus-visible:border-primary focus:outline-none"
                     onChange={handleInputChanges}
                     value={currentUser.roomId}
                 />
@@ -100,20 +101,21 @@ const FormComponent = () => {
                     type="text"
                     name="username"
                     placeholder="Username"
-                    className="w-full rounded-md border border-gray-500 bg-darkHover px-3 py-3 focus:outline-none"
+                    aria-label="Username"
+                    className="w-full rounded-lg border border-[#303832] bg-[#171B19] px-4 py-3 text-white placeholder:text-gray-500 focus-visible:border-primary focus:outline-none"
                     onChange={handleInputChanges}
                     value={currentUser.username}
                     ref={usernameRef}
                 />
                 <button
                     type="submit"
-                    className="mt-2 w-full rounded-md bg-primary px-8 py-3 text-lg font-semibold text-black"
+                    className="mt-2 w-full rounded-lg bg-primary px-8 py-3 text-lg font-bold text-black shadow-[0_0_22px_rgba(183,255,60,0.18)] hover:bg-[#c7ff67] hover:shadow-[0_0_28px_rgba(183,255,60,0.3)]"
                 >
                     Join
                 </button>
             </form>
             <button
-                className="cursor-pointer select-none underline"
+                className="cursor-pointer select-none text-sm text-gray-400 underline decoration-gray-600 underline-offset-4 hover:text-primary"
                 onClick={createNewRoomId}
             >
                 Generate Unique Room Id

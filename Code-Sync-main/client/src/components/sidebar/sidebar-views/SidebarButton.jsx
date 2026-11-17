@@ -4,6 +4,7 @@ import { VIEWS } from "@/types/view"
 import { useState } from "react"
 import { Tooltip } from "react-tooltip"
 import { buttonStyles, tooltipStyles } from "../tooltipStyles"
+import cn from "classnames"
 const ViewButton = ({ viewName, icon }) => {
     const { activeView, setActiveView, isSidebarOpen, setIsSidebarOpen } =
         useViews()
@@ -22,7 +23,13 @@ const ViewButton = ({ viewName, icon }) => {
             <button
                 onClick={() => handleViewClick(viewName)}
                 onMouseEnter={() => setShowTooltip(true)} // Show tooltip again on hover
-                className={`${buttonStyles.base} ${buttonStyles.hover}`}
+                className={cn(
+                    buttonStyles.base,
+                    activeView === viewName
+                        ? "bg-[#18231a] text-primary shadow-[inset_2px_0_0_#b7ff3c,0_0_14px_rgba(183,255,60,0.12)]"
+                        : buttonStyles.hover,
+                )}
+                aria-pressed={activeView === viewName}
                 {...(showTooltip && {
                     "data-tooltip-id": `tooltip-${viewName}`,
                     "data-tooltip-content": viewName,
